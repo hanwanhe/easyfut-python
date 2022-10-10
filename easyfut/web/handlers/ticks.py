@@ -7,7 +7,7 @@ class TicksHandler(BaseHandler):
     def get(self, ticks_symbol):
         # 检查传过来的symbol是否正确
         def check_symbol(symbol):
-            if(re.match(r'^[a-zA-Z0-9]+\.[a-zA-Z0-9]_\d+$', symbol)):
+            if(re.match(r'^[a-zA-Z0-9]+\.[a-zA-Z0-9]+_\d+$', symbol)):
                 return True
             else:
                 return False
