@@ -25,7 +25,7 @@ class BaseHandler(tornado.web.RequestHandler):
         if(self.share_dict['tqsdkserver_alive'] == False):
             return self.error(rcodes['tq_error']['code'], rcodes['tq_error']['msg'])
         #判断底层TqsdkServer是否已经启动完成
-        if(int(self.share_dict['last_update']) == 0):
+        if(self.share_dict['tqsdkserver_ready'] == False):
             return self.error(rcodes['tq_wait']['code'], rcodes['tq_wait']['msg'])
         #判断TqsdkServer是否正常(30秒内有过更新) 或者 进程已经挂掉
         if(int(time.time()) - self.share_dict['last_update'] > 30):

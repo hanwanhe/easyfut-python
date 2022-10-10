@@ -84,7 +84,7 @@ class TqsdkServer(BaseServer):
         # 获取仓位信息
         position = self.api.get_position()
         # 首次tqsdk信息同步到共享变量
-        self.sync2sharedict(account, orders, all_quotes, position, all_klines, all_ticks, True)
+        self.sync2sharedict(account, orders, all_quotes, position, all_klines, all_ticks)
         # 是否启动
         is_start = False
         # 主逻辑
@@ -147,7 +147,6 @@ class TqsdkServer(BaseServer):
                 klines_symbol = self.message_queue['klines'].get()
                 if(klines_symbol in all_klines):
                     continue
-
                 klines_symbol_arr = klines_symbol.split('_')
                 all_klines[klines_symbol] = self.api.get_kline_serial(klines_symbol_arr[0], klines_symbol_arr[1], klines_symbol_arr[2])
 
@@ -159,7 +158,7 @@ class TqsdkServer(BaseServer):
                 ticks_symbol_arr = ticks_symbol.split('_')
                 all_ticks[ticks_symbol] = self.api.get_tick_serial(ticks_symbol_arr[0], ticks_symbol_arr[1])
             # tqsdk信息同步到共享变量
-            self.sync2sharedict(account, orders, all_quotes, position, all_klines, all_ticks, False)
+            self.sync2sharedict(account, orders, all_quotes, position, all_klines, all_ticks)
         self.api.close()
 
 
@@ -196,52 +195,36 @@ class TqsdkServer(BaseServer):
 
 
     # 更新tqsdk当前信息到共享变量
-    def sync2sharedict(self, account, orders, all_quotes, position, all_klines, all_ticks, force = False):
+    def sync2sharedict(self, account, orders, all_quotes, position, all_klines, all_ticks):
         # 同步账户
-        if(self.api.is_changing(account) or force == True):
-            self.share_dict['account'] = self.extract_kv(account)
+        self.share_dict['account'] = self.extract_kv(account)
         # 同步订单
-        if (self.api.is_changing(orders) or force == True):
-            my_orderes = {}
-            for order_id in orders:
-                my_orderes[order_id] = self.extract_kv(orders[order_id])
-            self.share_dict['orders'] = my_orderes
+        my_orderes = {}
+        for order_id in orders:
+            my_orderes[order_id] = self.extract_kv(orders[order_id])
+        self.share_dict['orders'] = my_orderes
         # 同步quote
-        is_changing = False
         my_quotes = {}
         for quote_symbol in all_quotes:
             my_quotes[quote_symbol] = self.extract_kv(all_quotes[quote_symbol])
-            if(self.api.is_changing(all_quotes[quote_symbol])):
-                is_changing = True
-        if(is_changing or force == True):
-            self.share_dict['quote'] = my_quotes
+        self.share_dict['quote'] = my_quotes
         # 同步position
-        if (self.api.is_changing(position) or force == True):
-            my_position = {}
-            for quote_symbol in position:
-                my_position[quote_symbol] = self.extract_kv(position[quote_symbol])
-            self.share_dict['position'] = my_position
+        my_position = {}
+        for quote_symbol in position:
+            my_position[quote_symbol] = self.extract_kv(position[quote_symbol])
+        self.share_dict['position'] = my_position
         # 同步klines
-        is_changing = False
         my_klines = {}
         for quote_symbol in all_klines:
             my_klines[quote_symbol] = all_klines[quote_symbol].to_dict('records')
-            if(self.api.is_changing(all_klines[quote_symbol])):
-                is_changing = True
-        if(is_changing or force == True):
-            self.share_dict['klines'] = my_klines
+        self.share_dict['klines'] = my_klines
         # 同步ticks
-        is_changing = False
         my_ticks = {}
         for quote_symbol in all_ticks:
             my_ticks[quote_symbol] = all_ticks[quote_symbol].to_dict('records')
-            if(self.api.is_changing(all_ticks[quote_symbol])):
-                is_changing = True
-        if(is_changing or force == True):
-            self.share_dict['ticks'] = my_ticks
+        self.share_dict['ticks'] = my_ticks
         # 标记最近一次更新的时间戳
-        if(force == False):
-            self.share_dict['last_update'] = int(time.time())
+        self.share_dict['last_update'] = int(time.time())
         return True
 
 

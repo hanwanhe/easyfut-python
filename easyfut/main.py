@@ -44,6 +44,7 @@ def run():
     share_dict = manager.dict()
     share_dict['tqsdkserver_alive'] = True
     share_dict['webserver_ready'] = False
+    share_dict['tqsdkserver_ready'] = False
     # 进程间消息队列
     message_queue = {
         'order'     : Queue(),
