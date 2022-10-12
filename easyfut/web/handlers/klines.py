@@ -7,7 +7,7 @@ class KlinesHandler(BaseHandler):
     def get(self, klines_symbol):
         # 检查传过来的symbol是否正确
         def check_symbol(symbol):
-            if(re.match(r'[a-zA-Z0-9]+\.[a-zA-Z0-9]+_\d+_\d+', symbol)):
+            if(re.match(r'([a-zA-Z0-9]+\.[a-zA-Z0-9]+|KQ.m@[a-zA-Z0-9]+\.[a-zA-Z]+)_\d+_\d+', symbol)):
                 return True
             else:
                 return False

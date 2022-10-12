@@ -9,7 +9,7 @@ class QuotesHandler(BaseHandler):
     def get(self, quote_symbol):
         # 检查传过来的symbol是否正确
         def check_symbol(symbol):
-            if(re.match(r'^[a-zA-Z0-9]+\.[a-zA-Z0-9]+$', symbol)):
+            if(re.match(r'^([a-zA-Z0-9]+\.[a-zA-Z0-9]+|KQ.m@[a-zA-Z0-9]+\.[a-zA-Z]+)$', symbol)):
                 return True
             else:
                 return False
