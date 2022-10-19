@@ -5,16 +5,7 @@ import re, time
 # 获取k线相关
 class KlinesHandler(BaseHandler):
     def get(self, klines_symbol):
-        # 检查传过来的symbol是否正确
-        def check_symbol(symbol):
-            if(re.match(r'([a-zA-Z0-9]+\.[a-zA-Z0-9]+|KQ.m@[a-zA-Z0-9]+\.[a-zA-Z]+)_\d+_\d+', symbol)):
-                return True
-            else:
-                return False
         klines_symbols = self.parse_symbol(klines_symbol)
-        for klines_symbol in klines_symbols:
-            if(check_symbol(klines_symbol) == False):
-                 return self.error(rcodes['request_param_error']['code'], rcodes['request_param_error']['msg'])
         klines_symbols_len = len(klines_symbols)
         if(klines_symbols_len == 0):
             self.suc(self.share_dict['klines'])

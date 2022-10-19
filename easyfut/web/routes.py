@@ -10,9 +10,9 @@ def createRoutes(share_dict, message_queue):
     routes = []
     url2handler = {
         r"/account"                         : AccountHandler,
-        r"/quote([\/a-zA-Z0-9\.\,@]*)"       : QuotesHandler,
-        r"/klines([\/a-zA-Z0-9\.\,\_@]*)"    : KlinesHandler,
-        r"/ticks([\/a-zA-Z0-9\.\,\_@]*)"     : TicksHandler,
+        r"/quote([\/a-zA-Z0-9\.\,@\-]*)"       : QuotesHandler,
+        r"/klines([\/a-zA-Z0-9\.\,\_@\-]*)"    : KlinesHandler,
+        r"/ticks([\/a-zA-Z0-9\.\,\_@\-]*)"     : TicksHandler,
         r"/order([\/a-zA-Z0-9\,]*)"         : OrderHandler,
         r"/position"                        : PositionHandler,
 

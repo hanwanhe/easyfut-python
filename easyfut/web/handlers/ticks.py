@@ -5,16 +5,7 @@ import re, time
 # 获取Tick相关
 class TicksHandler(BaseHandler):
     def get(self, ticks_symbol):
-        # 检查传过来的symbol是否正确
-        def check_symbol(symbol):
-            if(re.match(r'^([a-zA-Z0-9]+\.[a-zA-Z0-9]+|KQ.m@[a-zA-Z0-9]+\.[a-zA-Z]+)_\d+$', symbol)):
-                return True
-            else:
-                return False
         ticks_symbols = self.parse_symbol(ticks_symbol)
-        for ticks_symbol in ticks_symbols:
-            if(check_symbol(ticks_symbol) == False):
-                 return self.error(rcodes['request_param_error']['code'], rcodes['request_param_error']['msg'])
         ticks_symbol_len = len(ticks_symbols)
         if(ticks_symbol_len == 0):
             self.suc(self.share_dict['ticks'])

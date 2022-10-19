@@ -7,16 +7,7 @@ import re
 # 获取行情相关
 class QuotesHandler(BaseHandler):
     def get(self, quote_symbol):
-        # 检查传过来的symbol是否正确
-        def check_symbol(symbol):
-            if(re.match(r'^([a-zA-Z0-9]+\.[a-zA-Z0-9]+|KQ.m@[a-zA-Z0-9]+\.[a-zA-Z]+)$', symbol)):
-                return True
-            else:
-                return False
         quote_symbols = self.parse_symbol(quote_symbol)
-        for quote_symbol in quote_symbols:
-            if(check_symbol(quote_symbol) == False):
-                 return self.error(rcodes['request_param_error']['code'], rcodes['request_param_error']['msg'])
         quote_symbols_len = len(quote_symbols)
         if(quote_symbols_len == 0):
             self.suc(self.share_dict['quote'])
