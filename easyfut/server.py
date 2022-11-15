@@ -96,14 +96,15 @@ class TqsdkServer(BaseServer):
                 is_start = True
                 self.share_dict['tqsdkserver_ready'] = True
                 # 服务启动成功
-                logging.info("TqsdkServer 启动成功")
+                logging.info("TqSdkServer 启动完成")
                 host = self.app_config.get('webserver', 'host')
                 port = self.app_config.get('webserver', 'port')
-                while(self.share_dict['webserver_ready'] == True):
-                    logging.info("WebServer 启动成功，正在监听：" + str(host) + ':' + str(port))
-                    break
+                while(self.share_dict['webserver_ready'] == False):
+                    time.sleep(1)
+                    logging.info("等待 Tornado WebServer 启动完成...")
+                logging.info("Tornado WebServer 启动完成，正在监听：" + str(host) + ':' + str(port))
                 # 输出免责
-                logging.warning("因交易过程中存在各种不可抗拒因素（断网，程序Bug...），用户在使用EasyFut过程中产生的任何亏损（损失），用户需自行承担，EasyFut不承担任何责任。")
+                logging.warning("因交易过程中存在各种不可抗拒因素（断网，程序Bug...），用户在使用EasyFut过程中产生的任何亏损（损失），用户需自行承担，EasyFut不承担任何责任，如果不同意请立即停止使用。")
                 # 输出当前交易环境
                 if(self.env == 'prod'):
                     logging.warning("您当前正处于实盘交易中，请注意...")
@@ -216,12 +217,18 @@ class TqsdkServer(BaseServer):
         # 同步klines
         my_klines = {}
         for quote_symbol in all_klines:
-            my_klines[quote_symbol] = all_klines[quote_symbol].to_dict('records')
+            records = all_klines[quote_symbol].to_dict('records')
+            for i in range(len(records)):
+                records[i] = self.extract_kv(records[i])
+            my_klines[quote_symbol] = records
         self.share_dict['klines'] = my_klines
         # 同步ticks
         my_ticks = {}
         for quote_symbol in all_ticks:
-            my_ticks[quote_symbol] = all_ticks[quote_symbol].to_dict('records')
+            records = all_ticks[quote_symbol].to_dict('records')
+            for i in range(len(records)):
+                records[i] = self.extract_kv(records[i])
+            my_ticks[quote_symbol] = records
         self.share_dict['ticks'] = my_ticks
         # 标记最近一次更新的时间戳
         self.share_dict['last_update'] = int(time.time())

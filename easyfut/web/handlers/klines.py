@@ -11,6 +11,8 @@ class KlinesHandler(BaseHandler):
             self.suc(self.share_dict['klines'])
         else:
             for klines_symbol in klines_symbols:
+                if (klines_symbol.count('_') != 2):
+                    return self.error(rcodes['request_param_error']['code'], rcodes['request_param_error']['msg'])
                 self.message_queue['klines'].put(klines_symbol)
             current_timestamp = int(time.time()*1000)
             # 超时时间（毫秒）

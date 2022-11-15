@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="easyfut",
-    version="1.0.2",
+    version="1.0.3",
     author="hanwanhe",
     author_email="hanwanhe@foxmail.com",
     description="Easy http api for futures",

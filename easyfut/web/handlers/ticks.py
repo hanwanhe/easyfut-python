@@ -11,6 +11,8 @@ class TicksHandler(BaseHandler):
             self.suc(self.share_dict['ticks'])
         else:
             for ticks_symbol in ticks_symbols:
+                if (ticks_symbol.count('_') != 1):
+                    return self.error(rcodes['request_param_error']['code'], rcodes['request_param_error']['msg'])
                 self.message_queue['ticks'].put(ticks_symbol)
             current_timestamp = int(time.time()*1000)
             # 超时时间（毫秒）
