@@ -183,7 +183,7 @@ class TqsdkServer(BaseServer):
                         if(math.isnan(tqsdk_variable[k]) == True):
                             kv[k] = 0.0
                         else:
-                            kv[k] = round(tqsdk_variable[k]*100)/100
+                            kv[k] = round(tqsdk_variable[k], 6)
                     elif(isinstance(tqsdk_variable[k], objs.TradingTime)):
                         kv[k] = {}
                         kv[k]['day'] = tqsdk_variable[k].day

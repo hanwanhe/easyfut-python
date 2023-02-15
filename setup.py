@@ -5,10 +5,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="easyfut",
-    version="1.0.3",
+    version="1.0.4",
     author="hanwanhe",
     author_email="hanwanhe@foxmail.com",
-    description="Easy http api for futures",
+    description="简单期货行情&交易HTTP接口API，基于TqSdk",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hanwanhe/easyfut-python",
